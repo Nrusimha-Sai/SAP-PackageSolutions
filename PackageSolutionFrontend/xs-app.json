@@ -1,0 +1,23 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "none",
+  "errorPage": [
+    {
+      "errorTypes": [404],
+      "page": "/index.html"
+    }
+  ],
+  "routes": [
+    {
+      "source": "^/api/(.*)$",
+      "target": "/api/$1",
+      "destination": "backend-api",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "/$1",
+      "localDir": "dist"
+    }
+  ]
+}

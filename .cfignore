@@ -1,0 +1,29 @@
+# Ignore Python build artifacts and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+.env
+ 
+# Ignore node_modules (the frontend build process handles these before push)
+frontend/node_modules/
+node_modules/
+ 
+# Ignore frontend source (we only deploy the dist folder for the frontend)
+frontend/src/
+frontend/public/
+frontend/index.html
+frontend/eslint.config.js
+frontend/vite.config.js
+ 
+# General Git and IDE ignores
+.git/
+.vscode/
+.idea/
+.DS_Store
+*.log
+mta_archives/
+*.mtar
+# Ignore git data
+.git/

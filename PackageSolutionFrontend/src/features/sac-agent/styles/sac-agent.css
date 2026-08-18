@@ -1,0 +1,975 @@
+/* ================================================================
+   sac-agent.css
+   Scoped CSS for the consolidated JR SAC Agent.
+   All rules are nested or prefixed with .sac-agent-root to prevent leakage.
+ ================================================================ */
+
+.sac-agent-root {
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.sac-agent-root * {
+  box-sizing: border-box;
+}
+
+/* ── Spaces / Config Models Panel ── */
+.sac-agent-root .spaces-panel-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sac-agent-root .spaces-panel {
+  width: 400px;
+  height: 100%;
+  background: var(--bg-modal);
+  border-left: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-modal);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Buttons & Toggles ── */
+.sac-agent-root .btn-generate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--blue-7) 0%, var(--blue-8) 100%);
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--r-md);
+  font-weight: 700;
+  box-shadow: var(--shadow-btn);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--t-base);
+  cursor: pointer;
+}
+
+.sac-agent-root .btn-generate:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(27, 144, 255, 0.4);
+  background: linear-gradient(135deg, var(--blue-6) 0%, var(--blue-7) 100%);
+}
+
+.sac-agent-root .btn-generate:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.sac-agent-root .btn-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-strip);
+  color: var(--text-primary);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-glass);
+  font-weight: 600;
+  transition: var(--t-fast);
+  cursor: pointer;
+}
+
+.sac-agent-root .btn-toggle:hover {
+  background: var(--bg-strip-hover);
+  border-color: var(--border-focus);
+}
+
+/* Slider switch container */
+.sac-agent-root .switch-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.sac-agent-root .switch-toggle input {
+  display: none;
+}
+
+.sac-agent-root .slider {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--border-input);
+  border-radius: 24px;
+  transition: 0.3s;
+  border: 1px solid var(--border-glass);
+}
+
+.sac-agent-root .slider:before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.sac-agent-root .switch-toggle input:checked + .slider {
+  background-color: var(--blue-7);
+}
+
+.sac-agent-root .switch-toggle input:checked + .slider:before {
+  transform: translateX(20px);
+  background-color: white;
+}
+
+.sac-agent-root .switch-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+/* ── Main Viewport Layout ── */
+.sac-agent-root .main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - var(--header-h));
+}
+
+.sac-agent-root .dashboard-pane {
+  flex: 1;
+  padding: clamp(14px, 2.5vw, 24px);
+  overflow-y: auto;
+}
+
+.sac-agent-root .dashboard-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-glass);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sac-agent-root .toolbar-left,
+.sac-agent-root .toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ── Dashboard Grid ── */
+.sac-agent-root .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  gap: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .sac-agent-root .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sac-agent-root .rec-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* When blueprint is active on mobile, hide the dashboard charts entirely to save space */
+  .sac-agent-root.blueprint-active .dashboard-pane {
+    display: none !important;
+  }
+}
+
+.sac-agent-root .widget-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+  height: 460px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--t-base);
+}
+
+.sac-agent-root .widget-card:hover {
+  background: var(--bg-card-hover);
+  box-shadow: 0 8px 32px rgba(0, 40, 130, 0.12);
+}
+
+.sac-agent-root .widget-header {
+  margin-bottom: 1rem;
+}
+
+.sac-agent-root .widget-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.sac-agent-root .widget-chart-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Compact Mode (Zoom Out) ── */
+.sac-agent-root .dashboard-wrapper.compact-mode .dashboard-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .sac-agent-root .dashboard-wrapper.compact-mode .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sac-agent-root .dashboard-wrapper.compact-mode .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sac-agent-root .dashboard-wrapper.compact-mode .widget-card {
+  height: 340px;
+  padding: 1rem;
+}
+
+.sac-agent-root .dashboard-wrapper.compact-mode .widget-chart-container {
+  min-height: 200px;
+}
+
+.sac-agent-root .dashboard-wrapper.compact-mode .widget-title {
+  font-size: 0.9rem;
+}
+
+.sac-agent-root .dashboard-wrapper.compact-mode .dashboard-kpi-row {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: 0.75rem !important;
+}
+
+.sac-agent-root .dashboard-wrapper.compact-mode .dashboard-kpi-row .widget-card {
+  height: auto !important;
+}
+
+.sac-agent-root .dashboard-wrapper.compact-mode .dashboard-kpi-row .widget-chart-container {
+  height: 80px !important;
+}
+
+/* ── Blueprint Sidebar ── */
+.sac-agent-root .blueprint-pane {
+  width: 440px;
+  background: var(--bg-sidebar);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-left: 1px solid var(--border-glass);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sac-agent-root .blueprint-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.sac-agent-root .blueprint-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.sac-agent-root .blueprint-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sac-agent-root .instruction-card {
+  border: 1px solid var(--border-glass);
+  border-radius: var(--r-md);
+  padding: 1.25rem;
+  background: var(--bg-strip);
+  box-shadow: var(--shadow-strip);
+  transition: var(--t-fast);
+}
+
+.sac-agent-root .instruction-card:hover {
+  background: var(--bg-strip-hover);
+  border-color: var(--border-focus);
+}
+
+.sac-agent-root .instruction-title {
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.sac-agent-root .instruction-step {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.sac-agent-root .step-number {
+  background: var(--blue-6);
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.sac-agent-root .step-text {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.sac-agent-root .badge {
+  background: var(--bg-badge);
+  color: var(--text-badge);
+  border: 1px solid var(--border-glass);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: monospace;
+  display: inline-block;
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+/* ── Recommendations View ── */
+.sac-agent-root .recommendations-view {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: sacFadeIn 0.3s ease-out;
+}
+
+.sac-agent-root .recommendations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-glass);
+  gap: 16px;
+}
+
+.sac-agent-root .recommendations-header h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.sac-agent-root .recommendation-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sac-agent-root .rec-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: var(--t-base);
+}
+
+.sac-agent-root .rec-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-focus);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 40, 130, 0.12);
+}
+
+.sac-agent-root .rec-card.selected {
+  border-color: var(--blue-6);
+  background-color: var(--bg-checked);
+  box-shadow: 0 0 0 1px var(--blue-6);
+}
+
+.sac-agent-root .rec-checkbox {
+  margin-right: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sac-agent-root .rec-content {
+  flex: 1;
+}
+
+.sac-agent-root .rec-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sac-agent-root .rec-rationale {
+  margin: 0 0 1rem 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.sac-agent-root .rec-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: auto;
+}
+
+.sac-agent-root .rec-card.disabled {
+  opacity: 0.5;
+  background: var(--bg-strip);
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.sac-agent-root .rec-card.disabled:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border-glass);
+}
+
+.sac-agent-root .rec-card.compact {
+  padding: 0.75rem 1.25rem;
+}
+
+.sac-agent-root .rec-card.compact .rec-checkbox {
+  margin-right: 0.88rem;
+}
+
+/* ── Badges ── */
+.sac-agent-root .confidence-badge {
+  display: inline-block;
+  background-color: var(--ds-success-bg);
+  color: var(--ds-success);
+  border: 1px solid var(--ds-success-light);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sac-agent-root .recommended-badge {
+  display: inline-block;
+  background-color: var(--ds-warning-bg);
+  color: var(--ds-warning);
+  border: 1px solid var(--ds-warning-light);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Tabbed Dashboard Pages Navigation ── */
+.sac-agent-root .sac-tabs {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-strip);
+  border-bottom: 2px solid var(--border-glass);
+  padding: 0 1rem;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  margin-bottom: 1.5rem;
+}
+
+.sac-agent-root .sac-tab {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: var(--t-fast);
+  outline: none;
+}
+
+.sac-agent-root .sac-tab:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-strip-hover);
+}
+
+.sac-agent-root .sac-tab-active {
+  color: var(--blue-7);
+  border-bottom: 3px solid var(--blue-6);
+  background-color: var(--bg-card);
+}
+
+/* ── Custom Data Binding Builder Pane ── */
+.sac-agent-root .builder-pane-ui {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--r-sm);
+  padding: 14px;
+  margin-top: 8px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: sacSlideDown 0.2s ease-out;
+}
+
+.sac-agent-root .builder-header-ui {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 6px;
+}
+
+.sac-agent-root .builder-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sac-agent-root .builder-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sac-agent-root .builder-pill-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  max-height: 90px;
+  overflow-y: auto;
+}
+
+.sac-agent-root .builder-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--bg-checked);
+  color: var(--blue-7);
+  border: 1px solid var(--border-checked);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.sac-agent-root .builder-pill.measure-pill {
+  background-color: var(--ds-danger-bg);
+  color: var(--ds-danger);
+  border: 1px solid var(--ds-danger-light);
+}
+
+.sac-agent-root .remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sac-agent-root .remove-btn:hover {
+  opacity: 1;
+}
+
+.sac-agent-root .add-container {
+  position: relative;
+}
+
+.sac-agent-root .add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-glass);
+  color: var(--text-muted);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: var(--t-fast);
+}
+
+.sac-agent-root .add-btn:hover {
+  border-color: var(--border-focus);
+  color: var(--text-primary);
+  background-color: var(--bg-strip);
+}
+
+.sac-agent-root .add-dropdown {
+  position: absolute;
+  top: 100%; left: 0;
+  margin-top: 4px;
+  background-color: var(--bg-dropdown-opt);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-modal);
+  min-width: 180px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 50;
+  padding: 4px;
+}
+
+.sac-agent-root .add-dropdown-item {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.sac-agent-root .add-dropdown-item:hover {
+  background-color: var(--bg-strip);
+}
+
+.sac-agent-root .builder-warning {
+  font-size: 0.72rem;
+  color: var(--ds-warning);
+  background-color: var(--ds-warning-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--ds-warning-light);
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.sac-agent-root .expand-builder-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--t-fast);
+}
+
+.sac-agent-root .expand-builder-btn:hover {
+  background-color: var(--bg-icon);
+  color: var(--blue-6);
+}
+
+/* ── Modals & Overlay Layers ── */
+.sac-agent-root .modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--bg-overlay);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sac-agent-root .modal-content {
+  background: var(--bg-modal);
+  border: 1px solid var(--border-modal);
+  box-shadow: var(--shadow-modal);
+  padding: 2rem;
+  border-radius: var(--r-xl);
+  width: 90%;
+  maxWidth: 600px;
+  maxHeight: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input Fields */
+.sac-agent-root .model-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-input);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border-radius: var(--r-md);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--t-fast);
+}
+
+.sac-agent-root .model-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(27, 144, 255, 0.15);
+}
+
+/* ── Empty State ── */
+.sac-agent-root .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--text-muted);
+  gap: 1rem;
+  text-align: center;
+}
+
+.sac-agent-root .empty-state svg {
+  opacity: 0.4;
+  color: var(--blue-6);
+}
+
+/* ── Keyframes Animations ── */
+@keyframes sacFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sacSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   RESPONSIVE – SAC Agent
+   Breakpoints: 1024px (tablet), 768px (mobile), 480px (xs mobile)
+================================================================ */
+
+/* ── Tablet ≤ 1024px ── */
+@media (max-width: 1024px) {
+  /* Main layout: stack left pane & blueprint sidebar vertically */
+  .sac-agent-root .main-content {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sac-agent-root .dashboard-pane {
+    overflow-y: visible;
+  }
+
+  /* Blueprint sidebar: full width below charts */
+  .sac-agent-root .blueprint-pane {
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: 1px solid var(--border-glass);
+  }
+
+  /* Dashboard grid: single column on tablet */
+  .sac-agent-root .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Compact mode on tablet: 2 columns */
+  .sac-agent-root .dashboard-wrapper.compact-mode .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── Mobile ≤ 768px ── */
+@media (max-width: 768px) {
+  /* Spaces config panel: full screen on mobile */
+  .sac-agent-root .spaces-panel {
+    width: 100%;
+  }
+
+  /* Toolbar: stack left and right groups */
+  .sac-agent-root .dashboard-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sac-agent-root .toolbar-left,
+  .sac-agent-root .toolbar-right {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .sac-agent-root .toolbar-right {
+    justify-content: flex-start;
+  }
+
+  .sac-agent-root .btn-toggle,
+  .sac-agent-root .btn-generate {
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Switch toggles: smaller label on mobile */
+  .sac-agent-root .switch-label {
+    font-size: 0.8rem;
+  }
+
+  /* Tabs: horizontally scrollable */
+  .sac-agent-root .sac-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    padding: 0 0.5rem;
+  }
+
+  .sac-agent-root .sac-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sac-agent-root .sac-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Recommendations header: stack on mobile */
+  .sac-agent-root .recommendations-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sac-agent-root .recommendations-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .sac-agent-root .recommendations-header > button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Recommendations view padding */
+  .sac-agent-root .recommendations-view {
+    padding: 1rem;
+  }
+
+  /* Compact mode: single column on mobile */
+  .sac-agent-root .dashboard-wrapper.compact-mode .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Widget cards: responsive height on mobile */
+  .sac-agent-root .widget-card {
+    min-height: 320px;
+    height: auto;
+  }
+
+  /* When blueprint is active on mobile, hide the dashboard charts entirely */
+  .sac-agent-root.blueprint-active .dashboard-pane {
+    display: none !important;
+  }
+
+  /* Modal: near full screen on mobile */
+  .sac-agent-root .modal-content {
+    width: 96vw;
+    max-height: 90vh;
+    padding: 1.25rem;
+    border-radius: var(--r-lg);
+  }
+}
+
+/* ── Extra Small ≤ 480px ── */
+@media (max-width: 480px) {
+  .sac-agent-root .dashboard-pane {
+    padding: 10px;
+  }
+
+  .sac-agent-root .recommendations-view {
+    padding: 0.75rem;
+  }
+
+  .sac-agent-root .rec-card {
+    padding: 0.85rem;
+  }
+
+  .sac-agent-root .rec-checkbox {
+    margin-right: 0.75rem;
+  }
+
+  /* KPI row: single column */
+  .sac-agent-root .dashboard-kpi-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sac-agent-root .widget-card {
+    height: 260px;
+  }
+
+  /* Blueprint: more compact */
+  .sac-agent-root .blueprint-content,
+  .sac-agent-root .blueprint-header {
+    padding: 1rem;
+  }
+}
+
+/* ── Export Dropdown ── */
+.sac-agent-root .export-menu-item {
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sac-agent-root .export-menu-item:last-child {
+  border-bottom: none;
+}
+
+.sac-agent-root .export-menu-item:hover {
+  background: var(--blue-1);
+  color: var(--blue-7);
+}

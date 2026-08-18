@@ -1,0 +1,25 @@
+{
+  "palette": {
+    "categorical": ["#0C447C", "#0F6E56", "#854F0B", "#712B13", "#3C3489"],
+    "sequential": ["#E6F1FB", "#B5D4F4", "#85B7EB", "#378ADD", "#185FA5"]
+  },
+  "typography": {
+    "font_family": "72 (SAP corporate font)",
+    "title_case": "sentence",
+    "title_max_words": 6
+  },
+  "kpi_thresholds": {
+    "gross_margin_pct": {"red": 20, "amber": 30, "green": 30},
+    "on_time_delivery_pct": {"red": 85, "amber": 95, "green": 95}
+  },
+  "chart_style": {
+    "max_categories_before_top_n": 8,
+    "top_n_bucket_label": "Other",
+    "gridlines": "horizontal_only",
+    "legend_position": "bottom"
+  },
+  "accessibility": {
+    "min_contrast_ratio": 4.5,
+    "colorblind_safe": true
+  }
+}

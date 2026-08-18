@@ -1,0 +1,69 @@
+# --------------------------
+# Frontend (React / Vite / Node)
+# --------------------------
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# (Make sure to NOT ignore .env.example or template files if you want to push them)
+
+# --------------------------
+# Backend (Python / FastAPI / Uvicorn)
+# --------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env_py/
+ENV/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# --------------------------
+# General / OS / Editor
+# --------------------------
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --------------------------
+# SAP / Build tools
+# --------------------------
+.mta/
+mta_archives/
+*.mtar
+manifest.yml
+mta.yaml
+xs-security.json

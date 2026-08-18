@@ -1,0 +1,6 @@
+--- NEW INSTRUCTION: Add a calculated column ESTIMATED_DELIVERY_BUFFER with formula Processing_Days + 3 ---
+Mock hit: calc column ESTIMATED_DELIVERY_BUFFER = Processing_Days + 3 -> [0] + 3 for AM_PO_APT
+--- NEW INSTRUCTION: Add a calculated column ESTIMATED_DELIVERY_BUFFER with formula Processing_Days + 3 ---
+Mock hit: calc column ESTIMATED_DELIVERY_BUFFER = Processing_Days + 3 -> [0] + 3 for AM_PO_APT
+--- NEW INSTRUCTION: Add a calculated column ESTIMATED_DELIVERY_BUFFER with formula ProcessingDays + 3 ---
+Mock hit: calc column ESTIMATED_DELIVERY_BUFFER = ProcessingDays + 3 -> [0] + 3 for ZSA_AM_SO_PROCESSING_TIME

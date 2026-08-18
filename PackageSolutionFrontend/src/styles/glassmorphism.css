@@ -1,0 +1,495 @@
+/* ================================================================
+   YASH TECHNOLOGIES – Base Resets & Glassmorphism Utilities
+================================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.32s ease, color 0.32s ease;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+button  { cursor: pointer; border: none; background: none; font-family: inherit; }
+input, select { font-family: inherit; outline: none; border: none; background: none; }
+a       { text-decoration: none; color: inherit; }
+ul, ol  { list-style: none; }
+img     { display: block; max-width: 100%; }
+
+/* ================================================================
+   GLASSMORPHISM CLASSES
+================================================================ */
+
+.glass-sidebar {
+  background: var(--bg-sidebar);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-right: 1px solid var(--border-glass);
+}
+
+.glass-header {
+  background: var(--bg-header);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--r-lg);
+}
+
+.glass-strip {
+  background: var(--bg-strip);
+  border: 1px solid var(--border-strip);
+  box-shadow: var(--shadow-strip);
+  border-radius: var(--r-md);
+  transition: background 0.22s ease, border-color 0.22s ease,
+              box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.glass-strip:hover {
+  background: var(--bg-strip-hover);
+  border-color: var(--border-focus);
+  box-shadow: 0 4px 20px rgba(27,144,255,0.14);
+}
+
+/* Only lift on pointer-fine (non-touch) devices */
+@media (hover: hover) {
+  .glass-strip:hover { transform: translateY(-1px); }
+}
+
+.glass-strip.strip--checked {
+  background: var(--bg-checked);
+  border-color: var(--border-checked);
+}
+
+.glass-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
+  border-radius: var(--r-md);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.glass-input input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.glass-input:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(27,144,255,0.10);
+}
+
+.glass-modal {
+  background: var(--bg-modal);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-modal);
+  box-shadow: var(--shadow-modal);
+  border-radius: var(--r-xl);
+}
+
+/* ================================================================
+   ANIMATED BACKGROUND MESH
+================================================================ */
+
+.bg-mesh {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-mesh::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(27,144,255,0.10) 0%, transparent 70%);
+  top: -220px; right: -180px;
+  animation: meshA 14s ease-in-out infinite;
+}
+.bg-mesh::after {
+  content: '';
+  position: absolute;
+  width: 550px; height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,64,176,0.07) 0%, transparent 70%);
+  bottom: -180px; left: -140px;
+  animation: meshB 18s ease-in-out infinite;
+}
+@keyframes meshA { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(40px) scale(1.06)} }
+@keyframes meshB { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.08)} }
+
+/* ================================================================
+   SKELETON SHIMMER
+================================================================ */
+
+.skeleton {
+  border-radius: var(--r-md);
+  background: var(--bg-strip);
+  border: 1px solid var(--border-strip);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(27,144,255,0.07) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ================================================================
+   CUSTOM CHECKBOX
+================================================================ */
+
+.kpi-checkbox {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  border: 2px solid rgba(100, 116, 139, 0.35);
+  background: var(--bg-input);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: var(--t-fast);
+  /* Enlarge touch target without changing visual size */
+  touch-action: manipulation;
+}
+
+.kpi-checkbox:checked {
+  background: var(--blue-7);
+  border-color: var(--blue-7);
+}
+
+.kpi-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px; top: 2px;
+  width: 6px; height: 10px;
+  border: 2px solid #fff;
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+.kpi-checkbox:hover:not(:checked) { border-color: var(--blue-6); }
+
+[data-theme="dark"] .kpi-checkbox {
+  border-color: rgba(77,177,255,0.32);
+}
+
+[data-theme="dark"] .kpi-checkbox:hover:not(:checked) {
+  border-color: var(--blue-5);
+}
+
+/* ================================================================
+   LOB BADGE
+================================================================ */
+
+.lob-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--bg-badge);
+  color: var(--text-badge);
+  border: 1px solid rgba(27,144,255,0.16);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .lob-badge {
+  border-color: rgba(27,144,255,0.24);
+}
+
+/* ================================================================
+   ICON CONTAINER
+================================================================ */
+
+.icon-wrap {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-icon);
+  color: var(--blue-6);
+  flex-shrink: 0;
+  border: 1px solid rgba(27,144,255,0.14);
+  transition: var(--t-fast);
+}
+
+[data-theme="dark"] .icon-wrap {
+  color: var(--blue-5);
+  border-color: rgba(27,144,255,0.22);
+}
+
+/* ================================================================
+   ICON BUTTONS
+================================================================ */
+
+.icon-btn {
+  width: 34px; height: 34px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
+  flex-shrink: 0;
+  transition: var(--t-fast);
+  /* Larger touch target on mobile */
+  min-width: 36px; min-height: 36px;
+}
+
+.icon-btn:hover {
+  background: var(--bg-icon);
+  color: var(--blue-6);
+}
+
+[data-theme="dark"] .icon-btn {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .icon-btn:hover {
+  color: var(--blue-4);
+  background: rgba(27,144,255,0.12);
+}
+
+/* ================================================================
+   DOWNLOAD BUTTON
+================================================================ */
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  background: linear-gradient(135deg, var(--blue-7) 0%, var(--blue-8) 100%);
+  color: #fff;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-btn);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: var(--t-base);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(27,144,255,0.48);
+  background: linear-gradient(135deg, var(--blue-6) 0%, var(--blue-7) 100%);
+}
+
+/* ================================================================
+   THEME TOGGLE
+================================================================ */
+
+.toggle-track {
+  width: 46px; height: 24px;
+  border-radius: 99px;
+  background: var(--blue-7);
+  position: relative;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.14);
+  flex-shrink: 0;
+  transition: background 0.26s;
+  touch-action: manipulation;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.26s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.22);
+}
+
+.toggle-thumb.is-dark { transform: translateX(22px); }
+
+/* ================================================================
+   SCROLLBAR
+================================================================ */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(27,144,255,0.22);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(27,144,255,0.42); }
+
+/* ================================================================
+   RESPONSIVE HELPERS
+   These rely on JS breakpoints (isMobile/isTablet) too,
+   but CSS classes are used for purely display-based hiding.
+================================================================ */
+
+/* Hide on screens ≤ 700px */
+@media (max-width: 700px) {
+  .hide-sm { display: none !important; }
+}
+
+/* ── DashboardStrip: stack on tablets and smaller ── */
+@media (max-width: 768px) {
+  .strip-row {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+
+  .icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .strip-meta {
+    flex-wrap: wrap;
+    gap: 6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .icon-wrap {
+    width: 38px;
+    height: 38px;
+  }
+
+  .kpi-checkbox {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ── Toolbar: stack search + filter vertically on mobile ── */
+@media (max-width: 600px) {
+  .toolbar-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .toolbar-row > * {
+    width: 100% !important;
+    min-width: unset !important;
+    height: 54px !important;
+  }
+}
+
+/* ── Modal: near-full-screen on mobile ── */
+@media (max-width: 600px) {
+  .glass-modal {
+    border-radius: 16px 16px 0 0;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* The centering wrapper overrides for mobile: pin to bottom */
+  .modal-center-wrapper {
+    align-items: flex-end !important;
+  }
+}
+
+/* ── Snapshot grid: single column on mobile ── */
+@media (max-width: 560px) {
+  .snapshot-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Glass card: reduce padding on small screens ── */
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 1rem !important;
+  }
+}
+
+/* ================================================================
+   DARK MODE – ENHANCED OVERRIDES
+   Ensures symbols, descriptions, and interactive elements are
+   clearly visible and match the quality of light mode.
+================================================================ */
+
+[data-theme="dark"] .glass-strip:hover {
+  box-shadow: 0 4px 20px rgba(27,144,255,0.22);
+}
+
+[data-theme="dark"] .glass-strip.strip--checked {
+  background: rgba(27,144,255,0.10);
+  border-color: rgba(77,177,255,0.34);
+}
+
+[data-theme="dark"] .glass-input:focus-within {
+  box-shadow: 0 0 0 3px rgba(27,144,255,0.16);
+}
+
+[data-theme="dark"] .download-btn {
+  box-shadow: 0 4px 22px rgba(27,144,255,0.40);
+}
+
+[data-theme="dark"] .download-btn:hover {
+  box-shadow: 0 8px 32px rgba(27,144,255,0.52);
+}
+
+[data-theme="dark"] .toggle-track {
+  border-color: rgba(255,255,255,0.18);
+}
+
+[data-theme="dark"] .skeleton::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(27,144,255,0.10) 50%, transparent 100%);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(27,144,255,0.30);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(27,144,255,0.48);
+}
+
+/* ================================================================
+   PRINT RESET
+================================================================ */
+@media print {
+  .bg-mesh, .glass-sidebar { display: none; }
+  body { background: #fff; color: #000; }
+}
