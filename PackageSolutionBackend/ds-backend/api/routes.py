@@ -38,21 +38,23 @@ async def upload_file(files: List[UploadFile] = File(...)):
             raise HTTPException(status_code=400, detail="Only JSON files are supported")
     
     try:
-        bundled_json = {"definitions": {}}
+        bundled_json = {}
         
         print(f"1. Receiving {len(files)} files...")
         for file in files:
             content = await file.read()
             data = json.loads(content)
-            # Merge all root keys dynamically to preserve businessLayerDefinitions, editorSettings, etc.
+            # Merge all root keys dynamically to preserve $version, $syntax, meta,
+            # businessLayerDefinitions, editorSettings, definitions, etc.
+            # The FIRST file's top-level scalar/metadata keys ($version, $syntax, meta) win.
             for root_key, root_value in data.items():
                 if root_key not in bundled_json:
-                    import copy
                     bundled_json[root_key] = copy.deepcopy(root_value)
                 elif isinstance(root_value, dict) and isinstance(bundled_json[root_key], dict):
                     bundled_json[root_key].update(root_value)
                 elif isinstance(root_value, list) and isinstance(bundled_json[root_key], list):
                     bundled_json[root_key].extend(root_value)
+                # For scalar keys ($version, $syntax etc.) already set, keep the first file's value
                 
         print(f"2. Bundled and compressed JSON successfully.")
         

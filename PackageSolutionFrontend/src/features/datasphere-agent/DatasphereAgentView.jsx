@@ -153,6 +153,40 @@ const DatasphereAgentView = ({ sharedFile, setSharedFile, collapseSidebar }) => 
               isProcessing={isProcessing}
               uploadedFileName={uploadedFileName}
             />
+            {/* TEMP: Download Output JSON button — commented out
+            <button
+              onClick={async () => {
+                try {
+                  const DS_BACKEND_URL = import.meta.env.VITE_DS_AGENT_API_URL || (import.meta.env.DEV ? 'http://localhost:8000/api/ds' : '/api/ds');
+                  const res = await fetch(`${DS_BACKEND_URL}/export`);
+                  if (!res.ok) throw new Error("No output JSON available");
+                  const data = await res.json();
+                  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = uploadedFileName ? uploadedFileName.replace('.json', '_updated.json') : "DatasphereExport_updated.json";
+                  a.click();
+                  URL.revokeObjectURL(url);
+                } catch (e) {
+                  alert("Failed to download output JSON. Please ensure a file is loaded and processed.");
+                }
+              }}
+              style={{
+                marginTop: 10,
+                width: '100%',
+                padding: '8px',
+                background: 'var(--blue-6)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--r-md)',
+                cursor: 'pointer'
+              }}
+            >
+              Download Output JSON
+            </button>
+            */}
+
           </div>
 
           {/* 2. Instruction */}
